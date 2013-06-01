@@ -17,8 +17,10 @@ type file struct {
 
 type files []file
 
-func (f *files) Size() (size int) {
-	for _, file := range f {
+var motionFiles files
+
+func (f *files) Size() (size int64) {
+	for _, file := range *f {
 		size += file.Size
 	}
 	return
@@ -26,8 +28,8 @@ func (f *files) Size() (size int) {
 
 func main() {
 	loadFiles()
-	fmt.Println(files)
-	fmt.Println(files.Size())
+	fmt.Println(motionFiles)
+	fmt.Println(motionFiles.Size())
 }
 
 // loadFiles loads all images when rascam is started.
@@ -49,10 +51,11 @@ func loadFiles() {
 		if name[len(name)-3:] == ".jpg" {
 			isVideo = false
 		}
-		files = append(files, file{
+		motionFiles = append(motionFiles, file{
 			Path:     fmt.Sprintf("/motion/%v", f.Name()),
 			Datetime: parsedTime,
 			Size:     f.Size(),
+			IsVideo:  isVideo,
 		})
 	}
 }
