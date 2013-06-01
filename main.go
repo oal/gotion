@@ -43,9 +43,9 @@ func loadFiles() {
 		name := f.Name()
 		var stringTime string
 		if name[len(name)-4:] == ".jpg" {
-			stringTime := strings.Split(name, "-")[1]
+			stringTime = strings.Split(name, "-")[1]
 		} else {
-			stringTime := strings.Split(name, ".")[0]
+			stringTime = strings.Split(name, ".")[0]
 		}
 
 		parsedTime, err := time.Parse("20060102150405", stringTime)
