@@ -44,11 +44,12 @@ func loadFiles() {
 		stringTime := strings.Split(name, "-")[1]
 		parsedTime, err := time.Parse("20060102150405", stringTime)
 		if err != nil {
-			log.Println("Unable to parse time")
+			log.Printf("Unable to parse time: %v\n", stringTime)
+
 		}
 
 		isVideo := true
-		if name[len(name)-3:] == ".jpg" {
+		if name[len(name)-4:] == ".jpg" {
 			isVideo = false
 		}
 		motionFiles = append(motionFiles, file{
