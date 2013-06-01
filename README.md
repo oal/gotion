@@ -1,0 +1,1 @@
+Just a toy project for managing `motion` on a Raspberry Pi. More information will be added once it actually works.
