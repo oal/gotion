@@ -1,12 +1,28 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"strings"
 	"time"
 )
+
+type configuration struct {
+	MaxSize int
+}
+
+var config configuration
+
+func loadConfig() {
+	data, err := ioutil.ReadFile("./config.json")
+	if err != nil {
+		panic(err)
+	}
+
+	json.Unmarshal(data, &config)
+}
 
 type file struct {
 	Path     string
@@ -23,13 +39,16 @@ func (f *files) Size() (size int64) {
 	for _, file := range *f {
 		size += file.Size
 	}
+	size /= 1000000 // To MB
 	return
 }
 
 func main() {
+	loadConfig()
 	loadFiles()
 	fmt.Println(motionFiles)
 	fmt.Println(motionFiles.Size())
+	fmt.Println("Max size (MB): ", config.MaxSize)
 }
 
 // loadFiles loads all images when rascam is started.
