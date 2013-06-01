@@ -90,7 +90,7 @@ func loadFiles() {
 
 	currentSize := motionFiles.Size()
 	if currentSize > config.MaxSize {
-		overflow := currentSize - config.MaxSize
+		overflow := (currentSize - config.MaxSize) * 1000000
 		var removed int64
 
 		for _, f := range motionFiles {
