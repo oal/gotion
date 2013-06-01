@@ -41,11 +41,16 @@ func loadFiles() {
 
 	for _, f := range fileList {
 		name := f.Name()
-		stringTime := strings.Split(name, "-")[1]
+		var stringTime string
+		if name[len(name)-4:] == ".jpg" {
+			stringTime := strings.Split(name, "-")[1]
+		} else {
+			stringTime := strings.Split(name, ".")[0]
+		}
+
 		parsedTime, err := time.Parse("20060102150405", stringTime)
 		if err != nil {
 			log.Printf("Unable to parse time: %v\n", stringTime)
-
 		}
 
 		isVideo := true
