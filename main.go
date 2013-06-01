@@ -46,6 +46,9 @@ func loadFiles() {
 			stringTime = strings.Split(name, "-")[1]
 		} else {
 			stringTime = strings.Split(name, ".")[0]
+			if stringTime[2] == '-' {
+				stringTime = strings.Split(stringTime, "-")[1]
+			}
 		}
 
 		parsedTime, err := time.Parse("20060102150405", stringTime)
