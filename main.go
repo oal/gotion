@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"strings"
 	"time"
 )
 
 type configuration struct {
-	MaxSize int
+	MaxSize int64
 }
 
 var config configuration
@@ -53,7 +54,7 @@ func main() {
 
 // loadFiles loads all images when rascam is started.
 func loadFiles() {
-	fileList, err := ioutil.ReadDir("./motion")
+	fileList, err := ioutil.ReadDir("motion")
 	if err != nil {
 		log.Println(err)
 	}
@@ -80,10 +81,26 @@ func loadFiles() {
 			isVideo = false
 		}
 		motionFiles = append(motionFiles, file{
-			Path:     fmt.Sprintf("/motion/%v", f.Name()),
+			Path:     fmt.Sprintf("motion/%v", f.Name()),
 			Datetime: parsedTime,
 			Size:     f.Size(),
 			IsVideo:  isVideo,
 		})
+	}
+
+	currentSize := motionFiles.Size()
+	if currentSize > config.MaxSize {
+		overflow := currentSize - config.MaxSize
+		var removed int64
+
+		for _, f := range motionFiles {
+			os.Remove(f.Path)
+
+			removed += f.Size
+			if removed >= overflow {
+				break
+			}
+		}
+
 	}
 }
