@@ -47,7 +47,7 @@ func (f *files) Size() (size int64) {
 func main() {
 	loadConfig()
 	loadFiles()
-	fmt.Println(motionFiles)
+
 	fmt.Println(motionFiles.Size())
 	fmt.Println("Max size (MB): ", config.MaxSize)
 }
@@ -94,13 +94,18 @@ func loadFiles() {
 		var removed int64
 
 		for _, f := range motionFiles {
-			os.Remove(f.Path)
+			err := os.Remove(f.Path)
+			if err != nil {
+				panic(err)
+			}
 
 			removed += f.Size
 			if removed >= overflow {
 				break
 			}
 		}
+
+		log.Println("Removed", removed)
 
 	}
 }
