@@ -66,7 +66,7 @@ func loadFiles() {
 			stringTime = strings.Split(name, "-")[1]
 		} else {
 			stringTime = strings.Split(name, ".")[0]
-			if stringTime[2] == '-' {
+			if strings.Contains("-", stringTime) {
 				stringTime = strings.Split(stringTime, "-")[1]
 			}
 		}
@@ -98,6 +98,7 @@ func loadFiles() {
 			if err != nil {
 				panic(err)
 			}
+			motionFiles = motionFiles[1:]
 
 			removed += f.Size
 			if removed >= overflow {
